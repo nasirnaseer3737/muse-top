@@ -1,4 +1,4 @@
-# NZ Agent
+# Muse Top
 
 A modular AI agent system, built piece by piece — one small step every day.
 Think of it as a personal assistant agent: it talks to an LLM (Google Gemini),
@@ -19,7 +19,7 @@ for what comes next, one piece at a time.
 export NZ_GEMINI_API_KEY="your-key-here"
 
 # 2. Run the agent
-python -m nz_agent
+python -m muse_top
 ```
 
 Without a key the agent still runs in clearly labelled **mock mode** — it
@@ -28,24 +28,24 @@ answers from local rules and tools, and every mock reply says so.
 ## How it works
 
 ```
-you ──▶ CLI (nz_agent/cli.py) ──▶ Agent (nz_agent/agent.py)
+you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
                                           │  builds a prompt from memory + tools
                                           ▼
-                                   LLM (nz_agent/llm.py) ── Gemini API
+                                   LLM (muse_top/llm.py) ── Gemini API
                                           │  may answer: CALL tool_name {"arg": ...}
                                           ▼
-                                   Tool registry (nz_agent/tools.py)
+                                   Tool registry (muse_top/tools.py)
                                           │  executes the tool, result goes back
                                           ▼
                                    final answer to you
 ```
 
-- **Memory** (`nz_agent/memory.py`): facts saved as JSON in `~/.nz-agent/memory.json`.
+- **Memory** (`muse_top/memory.py`): facts saved as JSON in `~/.muse-top/memory.json`.
   The agent can remember things (`remember_fact`) and recall them later.
-- **Tools** (`nz_agent/tools.py`): a registry. Each tool has a name,
+- **Tools** (`muse_top/tools.py`): a registry. Each tool has a name,
   description and a Python function. New tools are one `@registry.tool(...)`
   away — see the built-ins (`get_current_time`, `remember_fact`, `recall_fact`).
-- **Config** (`nz_agent/config.py`): everything from environment variables.
+- **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 
 ## Commands (inside the chat)

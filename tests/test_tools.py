@@ -6,8 +6,8 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nz_agent.memory import Memory
-from nz_agent.tools import ToolRegistry, build_default_registry, parse_tool_call
+from muse_top.memory import Memory
+from muse_top.tools import ToolRegistry, build_default_registry, parse_tool_call
 
 
 class TestToolRegistry(unittest.TestCase):

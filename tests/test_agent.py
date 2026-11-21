@@ -6,10 +6,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nz_agent.agent import Agent
-from nz_agent.config import Config
-from nz_agent.memory import Memory
-from nz_agent.tools import build_default_registry
+from muse_top.agent import Agent
+from muse_top.config import Config
+from muse_top.memory import Memory
+from muse_top.tools import build_default_registry
 
 
 class FakeLLM:

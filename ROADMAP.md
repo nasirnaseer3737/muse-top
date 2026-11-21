@@ -1,4 +1,4 @@
-# NZ Agent — Roadmap
+# Muse Top — Roadmap
 
 One item per day, in order. Small, focused, working. Mark each done with its date.
 
@@ -8,7 +8,7 @@ One item per day, in order. Small, focused, working. Mark each done with its dat
 - [ ] Day 3: `read_file` / `write_file` tools — sandboxed to a workspace folder.
 - [ ] Day 4: conversation history in memory — last N turns saved, loaded on start.
 - [ ] Day 5: `send_email` draft tool — builds a draft email (no sending without approval).
-- [ ] Day 6: scheduler — `schedule` tool + a `nz-agent run --once` mode that executes due tasks.
+- [ ] Day 6: scheduler — `schedule` tool + a `muse-top run --once` mode that executes due tasks.
 
 ## Milestone 2 — Real assistant jobs
 - [ ] Lead tools: score a lead CSV (reuse the NZ AI Lead Scorer logic as a tool).
@@ -19,6 +19,6 @@ One item per day, in order. Small, focused, working. Mark each done with its dat
 
 ## Milestone 3 — Hardening
 - [ ] Approval gate: tools marked "needs approval" ask before running.
-- [ ] Logging: every tool call logged to `~/.nz-agent/calls.log`.
-- [ ] Config file support (`~/.nz-agent/config.json`) alongside env vars.
+- [ ] Logging: every tool call logged to `~/.muse-top/calls.log`.
+- [ ] Config file support (`~/.muse-top/config.json`) alongside env vars.
 - [ ] Packaging: `pip install -e .` via pyproject.toml.

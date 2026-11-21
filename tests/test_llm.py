@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nz_agent.llm import MOCK_PREFIX, GeminiClient
+from muse_top.llm import MOCK_PREFIX, GeminiClient
 
 
 class TestGeminiClient(unittest.TestCase):

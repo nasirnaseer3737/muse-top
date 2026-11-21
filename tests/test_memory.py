@@ -7,7 +7,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nz_agent.memory import Memory
+from muse_top.memory import Memory
 
 
 class TestMemory(unittest.TestCase):
