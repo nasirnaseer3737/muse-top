@@ -19,6 +19,8 @@ class Config:
     data_dir: Path = field(default_factory=lambda: Path.home() / ".muse-top")
     llm_timeout_seconds: int = 30
     max_history_turns: int = 10
+    web_timeout_seconds: int = 15
+    web_max_bytes: int = 512_000
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -29,6 +31,8 @@ class Config:
             data_dir=data_dir,
             llm_timeout_seconds=int(os.environ.get("MUSE_TOP_LLM_TIMEOUT", "30")),
             max_history_turns=int(os.environ.get("MUSE_TOP_MAX_HISTORY", "10")),
+            web_timeout_seconds=int(os.environ.get("MUSE_TOP_WEB_TIMEOUT", "15")),
+            web_max_bytes=int(os.environ.get("MUSE_TOP_WEB_MAX_BYTES", "512000")),
         )
 
     @property

@@ -12,6 +12,9 @@ Day 1 (2026-11-21): skeleton — CLI, config, agent loop, tool registry,
 JSON memory, Gemini client with labelled mock fallback. See [ROADMAP.md](ROADMAP.md)
 for what comes next, one piece at a time.
 
+Day 2 (2026-11-21): `web_fetch` tool — fetch a URL, return its title +
+readable text (stdlib urllib, 15s timeout, 512 KB cap, http(s) only).
+
 ## Quick start
 
 ```bash
@@ -45,6 +48,9 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 - **Tools** (`muse_top/tools.py`): a registry. Each tool has a name,
   description and a Python function. New tools are one `@registry.tool(...)`
   away — see the built-ins (`get_current_time`, `remember_fact`, `recall_fact`).
+- **Web fetch** (`muse_top/web.py`): `web_fetch` downloads a page and
+  returns its title + readable text — http(s) only, 15s timeout, 512 KB
+  cap (tune with `MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`).
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 

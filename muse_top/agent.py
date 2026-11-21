@@ -44,7 +44,7 @@ class Agent:
     ) -> None:
         self.config = config or Config.from_env()
         self.memory = memory or Memory(self.config.memory_path)
-        self.registry = registry or build_default_registry(self.memory)
+        self.registry = registry or build_default_registry(self.memory, self.config)
         self.llm = llm or GeminiClient(
             api_key=self.config.api_key,
             model=self.config.model,

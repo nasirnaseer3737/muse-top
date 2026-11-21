@@ -4,7 +4,7 @@ One item per day, in order. Small, focused, working. Mark each done with its dat
 
 ## Milestone 1 — Core (done: skeleton)
 - [x] 2026-11-21 — Day 1: skeleton — CLI, config, agent loop, tool registry, JSON memory, Gemini client with labelled mock fallback, tests.
-- [ ] Day 2: `web_fetch` tool — fetch a URL, return title + text (stdlib urllib, timeout + size cap).
+- [x] 2026-11-21 — Day 2: `web_fetch` tool — fetch a URL, return title + text (stdlib urllib, timeout + size cap).
 - [ ] Day 3: `read_file` / `write_file` tools — sandboxed to a workspace folder.
 - [ ] Day 4: conversation history in memory — last N turns saved, loaded on start.
 - [ ] Day 5: `send_email` draft tool — builds a draft email (no sending without approval).

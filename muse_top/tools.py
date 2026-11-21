@@ -13,6 +13,9 @@ from datetime import datetime
 from typing import Callable
 
 
+from .web import fetch_url
+
+
 @dataclass
 class Tool:
     name: str
@@ -66,13 +69,22 @@ class ToolRegistry:
         return str(result)
 
 
-def build_default_registry(memory) -> ToolRegistry:
+def build_default_registry(memory, config=None) -> ToolRegistry:
     """Registry with the Day-1 built-in tools."""
     registry = ToolRegistry()
 
     @registry.tool("get_current_time", "Returns the current date and time.")
     def _get_current_time() -> str:
         return datetime.now().strftime("%A, %d %B %Y, %H:%M %Z")
+
+    @registry.tool(
+        "web_fetch",
+        "Fetch a web page and return its title + readable text. Args: url.",
+    )
+    def _web_fetch(url: str) -> str:
+        timeout = getattr(config, "web_timeout_seconds", 15) if config else 15
+        max_bytes = getattr(config, "web_max_bytes", 512_000) if config else 512_000
+        return fetch_url(url, timeout_seconds=timeout, max_bytes=max_bytes)
 
     @registry.tool("remember_fact", "Remember a fact. Args: key, value.")
     def _remember_fact(key: str, value: str) -> str:
