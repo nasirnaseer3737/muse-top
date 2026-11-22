@@ -10,9 +10,11 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
 from typing import Callable
 
 
+from .files import read_file, write_file
 from .web import fetch_url
 
 
@@ -97,6 +99,27 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         if value is None:
             return f"No fact remembered for '{key}'."
         return f"{key} = {value}"
+
+    @registry.tool(
+        "read_file",
+        "Read a text file inside the agent workspace. Args: path (relative to the workspace).",
+    )
+    def _read_file(path: str) -> str:
+        workspace = getattr(config, "workspace_dir", None) if config else None
+        if workspace is None:
+            workspace = Path.home() / ".muse-top" / "workspace"
+        max_bytes = getattr(config, "file_max_bytes", 64_000) if config else 64_000
+        return read_file(workspace, path, max_bytes=max_bytes)
+
+    @registry.tool(
+        "write_file",
+        "Write text to a file inside the agent workspace (creates folders). Args: path (relative to the workspace), content.",
+    )
+    def _write_file(path: str, content: str) -> str:
+        workspace = getattr(config, "workspace_dir", None) if config else None
+        if workspace is None:
+            workspace = Path.home() / ".muse-top" / "workspace"
+        return write_file(workspace, path, content)
 
     return registry
 

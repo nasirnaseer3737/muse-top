@@ -22,7 +22,14 @@ class TestToolRegistry(unittest.TestCase):
     def test_builtins_registered(self):
         self.assertEqual(
             self.registry.names(),
-            ["get_current_time", "recall_fact", "remember_fact", "web_fetch"],
+            [
+                "get_current_time",
+                "read_file",
+                "recall_fact",
+                "remember_fact",
+                "web_fetch",
+                "write_file",
+            ],
         )
 
     def test_get_current_time_returns_text(self):

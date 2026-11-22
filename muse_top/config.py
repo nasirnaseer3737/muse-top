@@ -21,6 +21,10 @@ class Config:
     max_history_turns: int = 10
     web_timeout_seconds: int = 15
     web_max_bytes: int = 512_000
+    workspace_dir: Path = field(
+        default_factory=lambda: Path.home() / ".muse-top" / "workspace"
+    )
+    file_max_bytes: int = 64_000
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -33,6 +37,9 @@ class Config:
             max_history_turns=int(os.environ.get("MUSE_TOP_MAX_HISTORY", "10")),
             web_timeout_seconds=int(os.environ.get("MUSE_TOP_WEB_TIMEOUT", "15")),
             web_max_bytes=int(os.environ.get("MUSE_TOP_WEB_MAX_BYTES", "512000")),
+            workspace_dir=Path(os.environ.get("MUSE_TOP_WORKSPACE", ""))
+            or (Path.home() / ".muse-top" / "workspace"),
+            file_max_bytes=int(os.environ.get("MUSE_TOP_FILE_MAX_BYTES", "64000")),
         )
 
     @property

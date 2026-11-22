@@ -15,6 +15,11 @@ for what comes next, one piece at a time.
 Day 2 (2026-11-21): `web_fetch` tool — fetch a URL, return its title +
 readable text (stdlib urllib, 15s timeout, 512 KB cap, http(s) only).
 
+Day 3 (2026-11-22): `read_file` / `write_file` tools — read and write
+text files sandboxed to the agent workspace (`~/.muse-top/workspace`,
+tune with `MUSE_TOP_WORKSPACE`); absolute paths, `..` escapes and
+symlinks pointing outside are refused, 64 KB read cap.
+
 ## Quick start
 
 ```bash
@@ -51,6 +56,11 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 - **Web fetch** (`muse_top/web.py`): `web_fetch` downloads a page and
   returns its title + readable text — http(s) only, 15s timeout, 512 KB
   cap (tune with `MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`).
+- **File tools** (`muse_top/files.py`): `read_file` / `write_file` work
+  only inside the workspace folder (`~/.muse-top/workspace`, tune with
+  `MUSE_TOP_WORKSPACE`); absolute paths, `..` escapes and symlinks
+  pointing outside are refused, reads cap at 64 KB
+  (`MUSE_TOP_FILE_MAX_BYTES`).
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 
