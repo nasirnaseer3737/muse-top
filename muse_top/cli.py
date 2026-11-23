@@ -10,6 +10,7 @@ HELP = """Commands:
   /help     show this help
   /tools    list registered tools
   /memory   list remembered facts
+  /history  show the recent conversation
   /exit     quit
 Just type a message to chat with the agent.
 """
@@ -43,6 +44,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
         if user_input == "/memory":
             print(agent.memory.render_for_prompt())
+            continue
+        if user_input == "/history":
+            print(agent.history.render() or "No conversation yet.")
             continue
         print(agent.chat(user_input))
     return 0

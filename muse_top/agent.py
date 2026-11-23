@@ -11,6 +11,7 @@ One turn:
 from __future__ import annotations
 
 from .config import Config
+from .history import History
 from .llm import GeminiClient
 from .memory import Memory
 from .tools import ToolRegistry, build_default_registry, parse_tool_call
@@ -41,6 +42,7 @@ class Agent:
         llm: GeminiClient | None = None,
         memory: Memory | None = None,
         registry: ToolRegistry | None = None,
+        history: History | None = None,
     ) -> None:
         self.config = config or Config.from_env()
         self.memory = memory or Memory(self.config.memory_path)
@@ -50,12 +52,11 @@ class Agent:
             model=self.config.model,
             timeout_seconds=self.config.llm_timeout_seconds,
         )
-        self.history: list[tuple[str, str]] = []  # (role, text), oldest first
+        # Last N turns, loaded from disk so the conversation survives restarts.
+        self.history = history or History(self.config.history_path, self.config.max_history_turns)
 
     def _build_prompt(self, user_message: str) -> str:
-        history_text = ""
-        for role, text in self.history[-self.config.max_history_turns :]:
-            history_text += f"{role}: {text}\n"
+        history_text = self.history.render()
         prompt = SYSTEM_PROMPT.format(
             tools=self.registry.describe(),
             facts=self.memory.render_for_prompt(),
@@ -95,7 +96,6 @@ class Agent:
             # A mock LLM echoes the prompt; strip the tool-result block back out.
             reply = final if final.strip() else reply
 
-        self.history.append(("User", message))
-        self.history.append(("Assistant", reply))
-        self.history = self.history[-self.config.max_history_turns * 2 :]
+        self.history.append("User", message)
+        self.history.append("Assistant", reply)
         return reply

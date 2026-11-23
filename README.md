@@ -20,6 +20,11 @@ text files sandboxed to the agent workspace (`~/.muse-top/workspace`,
 tune with `MUSE_TOP_WORKSPACE`); absolute paths, `..` escapes and
 symlinks pointing outside are refused, 64 KB read cap.
 
+Day 4 (2026-11-23): conversation history — the last 10 turns are saved
+to `~/.muse-top/history.json` (tune with `MUSE_TOP_MAX_HISTORY`) and
+loaded on start, so the agent remembers the conversation across
+restarts; `/history` shows the recent conversation.
+
 ## Quick start
 
 ```bash
@@ -50,6 +55,9 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 
 - **Memory** (`muse_top/memory.py`): facts saved as JSON in `~/.muse-top/memory.json`.
   The agent can remember things (`remember_fact`) and recall them later.
+- **History** (`muse_top/history.py`): the last 10 turns saved as JSON in
+  `~/.muse-top/history.json` (tune with `MUSE_TOP_MAX_HISTORY`), loaded
+  on start and included in every prompt; corrupt files start empty.
 - **Tools** (`muse_top/tools.py`): a registry. Each tool has a name,
   description and a Python function. New tools are one `@registry.tool(...)`
   away — see the built-ins (`get_current_time`, `remember_fact`, `recall_fact`).
@@ -71,6 +79,7 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 | `/help`   | show commands             |
 | `/tools`  | list registered tools     |
 | `/memory` | list remembered facts     |
+| `/history`| show recent conversation  |
 | `/exit`   | quit                      |
 
 ## Tests

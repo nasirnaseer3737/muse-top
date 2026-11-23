@@ -49,3 +49,7 @@ class Config:
     @property
     def memory_path(self) -> Path:
         return self.data_dir / "memory.json"
+
+    @property
+    def history_path(self) -> Path:
+        return self.data_dir / "history.json"
