@@ -11,6 +11,7 @@ HELP = """Commands:
   /tools    list registered tools
   /memory   list remembered facts
   /history  show the recent conversation
+  /drafts   list saved email drafts
   /exit     quit
 Just type a message to chat with the agent.
 """
@@ -47,6 +48,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
         if user_input == "/history":
             print(agent.history.render() or "No conversation yet.")
+            continue
+        if user_input == "/drafts":
+            print(agent.registry.call("list_drafts"))
             continue
         print(agent.chat(user_input))
     return 0

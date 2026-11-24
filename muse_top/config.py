@@ -25,10 +25,18 @@ class Config:
         default_factory=lambda: Path.home() / ".muse-top" / "workspace"
     )
     file_max_bytes: int = 64_000
+    drafts_dir: Path = field(
+        default_factory=lambda: Path.home() / ".muse-top" / "drafts"
+    )
 
     @classmethod
     def from_env(cls) -> "Config":
-        data_dir = Path(os.environ.get("MUSE_TOP_DATA_DIR", "")) or (Path.home() / ".muse-top")
+        # NB: Path("") is truthy (it is Path(".")), so apply `or` to the
+        # raw string first — otherwise an unset variable would silently
+        # point every path at the current working directory.
+        data_dir = Path(
+            os.environ.get("MUSE_TOP_DATA_DIR") or (Path.home() / ".muse-top")
+        )
         return cls(
             api_key=os.environ.get("NZ_GEMINI_API_KEY", "").strip(),
             model=os.environ.get("NZ_GEMINI_MODEL", "gemini-2.0-flash").strip() or "gemini-2.0-flash",
@@ -37,9 +45,14 @@ class Config:
             max_history_turns=int(os.environ.get("MUSE_TOP_MAX_HISTORY", "10")),
             web_timeout_seconds=int(os.environ.get("MUSE_TOP_WEB_TIMEOUT", "15")),
             web_max_bytes=int(os.environ.get("MUSE_TOP_WEB_MAX_BYTES", "512000")),
-            workspace_dir=Path(os.environ.get("MUSE_TOP_WORKSPACE", ""))
-            or (Path.home() / ".muse-top" / "workspace"),
+            workspace_dir=Path(
+                os.environ.get("MUSE_TOP_WORKSPACE")
+                or (Path.home() / ".muse-top" / "workspace")
+            ),
             file_max_bytes=int(os.environ.get("MUSE_TOP_FILE_MAX_BYTES", "64000")),
+            drafts_dir=Path(
+                os.environ.get("MUSE_TOP_DRAFTS_DIR") or (data_dir / "drafts")
+            ),
         )
 
     @property

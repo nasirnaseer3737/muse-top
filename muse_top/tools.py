@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Callable
 
 
+from .email_draft import create_draft, list_drafts
 from .files import read_file, write_file
 from .web import fetch_url
 
@@ -120,6 +121,25 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         if workspace is None:
             workspace = Path.home() / ".muse-top" / "workspace"
         return write_file(workspace, path, content)
+
+    @registry.tool(
+        "draft_email",
+        "Build an email draft and save it — never sends. Args: to, subject, body, cc (optional), bcc (optional).",
+    )
+    def _draft_email(
+        to, subject: str, body: str = "", cc=None, bcc=None
+    ) -> str:
+        drafts_dir = getattr(config, "drafts_dir", None) if config else None
+        if drafts_dir is None:
+            drafts_dir = Path.home() / ".muse-top" / "drafts"
+        return create_draft(drafts_dir, to, subject, body, cc=cc, bcc=bcc)
+
+    @registry.tool("list_drafts", "List saved email drafts (newest first).")
+    def _list_drafts() -> str:
+        drafts_dir = getattr(config, "drafts_dir", None) if config else None
+        if drafts_dir is None:
+            drafts_dir = Path.home() / ".muse-top" / "drafts"
+        return list_drafts(drafts_dir)
 
     return registry
 

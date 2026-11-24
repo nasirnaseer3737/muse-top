@@ -23,7 +23,9 @@ class TestToolRegistry(unittest.TestCase):
         self.assertEqual(
             self.registry.names(),
             [
+                "draft_email",
                 "get_current_time",
+                "list_drafts",
                 "read_file",
                 "recall_fact",
                 "remember_fact",

@@ -25,6 +25,16 @@ to `~/.muse-top/history.json` (tune with `MUSE_TOP_MAX_HISTORY`) and
 loaded on start, so the agent remembers the conversation across
 restarts; `/history` shows the recent conversation.
 
+Day 5 (2026-11-24): email drafts — `draft_email` builds an email draft
+(to/subject/body, optional cc/bcc), validates every address, and saves
+it as JSON in `~/.muse-top/drafts/` (tune with `MUSE_TOP_DRAFTS_DIR`);
+`list_drafts` lists saved drafts, newest first, and `/drafts` shows
+them in the chat. Drafts are never sent — there is no SMTP code at
+all; sending needs a human. Also fixed: `Config.from_env()` used to
+point data/workspace/drafts at the current directory when the env vars
+were unset (`Path("")` is truthy); now they correctly fall back to
+`~/.muse-top`.
+
 ## Quick start
 
 ```bash
@@ -69,6 +79,12 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
   `MUSE_TOP_WORKSPACE`); absolute paths, `..` escapes and symlinks
   pointing outside are refused, reads cap at 64 KB
   (`MUSE_TOP_FILE_MAX_BYTES`).
+- **Email drafts** (`muse_top/email_draft.py`): `draft_email` builds a
+  draft (to/subject/body, optional cc/bcc), validates every address,
+  and saves it as JSON in `~/.muse-top/drafts/` (tune with
+  `MUSE_TOP_DRAFTS_DIR`); `list_drafts` lists them newest first.
+  Drafts are never sent — there is no SMTP code anywhere; sending
+  needs a human's approval.
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 
@@ -80,6 +96,7 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 | `/tools`  | list registered tools     |
 | `/memory` | list remembered facts     |
 | `/history`| show recent conversation  |
+| `/drafts` | list saved email drafts   |
 | `/exit`   | quit                      |
 
 ## Tests
