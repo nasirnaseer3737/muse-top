@@ -22,6 +22,7 @@ class TestConfigFromEnv(unittest.TestCase):
         self.assertEqual(config.data_dir, home / ".muse-top")
         self.assertEqual(config.workspace_dir, home / ".muse-top" / "workspace")
         self.assertEqual(config.drafts_dir, home / ".muse-top" / "drafts")
+        self.assertEqual(config.schedule_path, home / ".muse-top" / "schedule.json")
         self.assertEqual(config.memory_path, home / ".muse-top" / "memory.json")
         self.assertEqual(config.history_path, home / ".muse-top" / "history.json")
 
@@ -30,6 +31,7 @@ class TestConfigFromEnv(unittest.TestCase):
             "MUSE_TOP_DATA_DIR": "/tmp/mt-data",
             "MUSE_TOP_WORKSPACE": "/tmp/mt-ws",
             "MUSE_TOP_DRAFTS_DIR": "/tmp/mt-drafts",
+            "MUSE_TOP_SCHEDULE_PATH": "/tmp/mt-schedule.json",
             "MUSE_TOP_MAX_HISTORY": "3",
         }
         with mock.patch.dict(os.environ, env, clear=True):
@@ -37,6 +39,7 @@ class TestConfigFromEnv(unittest.TestCase):
         self.assertEqual(config.data_dir, Path("/tmp/mt-data"))
         self.assertEqual(config.workspace_dir, Path("/tmp/mt-ws"))
         self.assertEqual(config.drafts_dir, Path("/tmp/mt-drafts"))
+        self.assertEqual(config.schedule_path, Path("/tmp/mt-schedule.json"))
         self.assertEqual(config.max_history_turns, 3)
 
     def test_empty_string_env_falls_back_to_default(self):

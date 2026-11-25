@@ -28,6 +28,9 @@ class Config:
     drafts_dir: Path = field(
         default_factory=lambda: Path.home() / ".muse-top" / "drafts"
     )
+    schedule_path: Path = field(
+        default_factory=lambda: Path.home() / ".muse-top" / "schedule.json"
+    )
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -52,6 +55,10 @@ class Config:
             file_max_bytes=int(os.environ.get("MUSE_TOP_FILE_MAX_BYTES", "64000")),
             drafts_dir=Path(
                 os.environ.get("MUSE_TOP_DRAFTS_DIR") or (data_dir / "drafts")
+            ),
+            schedule_path=Path(
+                os.environ.get("MUSE_TOP_SCHEDULE_PATH")
+                or (data_dir / "schedule.json")
             ),
         )
 

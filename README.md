@@ -35,6 +35,15 @@ point data/workspace/drafts at the current directory when the env vars
 were unset (`Path("")` is truthy); now they correctly fall back to
 `~/.muse-top`.
 
+Day 6 (2026-11-25): scheduler — `schedule` schedules a task (a message
+for the agent) for later (`tomorrow 14:00`, `in 30 minutes`,
+`2026-11-26 14:00`); tasks live in `~/.muse-top/schedule.json` (tune
+with `MUSE_TOP_SCHEDULE_PATH`); `list_tasks` lists pending tasks
+(soonest first), `cancel_task` cancels one by id, and `/tasks` shows
+them in the chat. `python -m muse_top run --once` runs every task whose
+time has come, feeds each to the agent as a chat message, and marks it
+done so it never runs twice.
+
 ## Quick start
 
 ```bash
@@ -85,6 +94,14 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
   `MUSE_TOP_DRAFTS_DIR`); `list_drafts` lists them newest first.
   Drafts are never sent — there is no SMTP code anywhere; sending
   needs a human's approval.
+- **Scheduler** (`muse_top/schedule.py`): `schedule` schedules a task
+  (a message for the agent) for later — `tomorrow 14:00`,
+  `in 30 minutes`, `2026-11-26 14:00` — stored in
+  `~/.muse-top/schedule.json` (tune with `MUSE_TOP_SCHEDULE_PATH`);
+  `list_tasks` lists pending tasks soonest first, `cancel_task`
+  cancels one by id. `python -m muse_top run --once` executes every
+  due task (each runs as a chat message) and marks it done so it never
+  runs twice; a corrupt schedule file starts empty.
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 
@@ -97,6 +114,7 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
 | `/memory` | list remembered facts     |
 | `/history`| show recent conversation  |
 | `/drafts` | list saved email drafts   |
+| `/tasks`  | list scheduled tasks      |
 | `/exit`   | quit                      |
 
 ## Tests

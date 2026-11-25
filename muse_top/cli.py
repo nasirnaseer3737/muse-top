@@ -12,6 +12,7 @@ HELP = """Commands:
   /memory   list remembered facts
   /history  show the recent conversation
   /drafts   list saved email drafts
+  /tasks    list scheduled tasks
   /exit     quit
 Just type a message to chat with the agent.
 """
@@ -20,6 +21,13 @@ Just type a message to chat with the agent.
 def main(argv: list[str] | None = None) -> int:
     config = Config.from_env()
     agent = Agent(config=config)
+    if argv and argv[0] == "run":
+        if argv[1:] == ["--once"]:
+            print(agent.run_due_tasks())
+            return 0
+        print("Usage: python -m muse_top run --once")
+        print("(A looping scheduler mode is not implemented yet.)")
+        return 2
     mode = "Gemini API" if config.has_api_key else "MOCK MODE (no NZ_GEMINI_API_KEY set)"
     print(f"Muse Top v0.1.0 — running in {mode}. Type /help for commands, /exit to quit.")
     if argv:
@@ -51,6 +59,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
         if user_input == "/drafts":
             print(agent.registry.call("list_drafts"))
+            continue
+        if user_input == "/tasks":
+            print(agent.registry.call("list_tasks"))
             continue
         print(agent.chat(user_input))
     return 0

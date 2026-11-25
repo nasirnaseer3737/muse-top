@@ -16,6 +16,7 @@ from typing import Callable
 
 from .email_draft import create_draft, list_drafts
 from .files import read_file, write_file
+from .schedule import Scheduler
 from .web import fetch_url
 
 
@@ -140,6 +141,30 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         if drafts_dir is None:
             drafts_dir = Path.home() / ".muse-top" / "drafts"
         return list_drafts(drafts_dir)
+
+    @registry.tool(
+        "schedule",
+        "Schedule a task for the agent to run later. Args: task, when (e.g. 'tomorrow 14:00', 'in 30 minutes', '2026-11-26 14:00').",
+    )
+    def _schedule(task: str, when: str) -> str:
+        schedule_path = getattr(config, "schedule_path", None) if config else None
+        if schedule_path is None:
+            schedule_path = Path.home() / ".muse-top" / "schedule.json"
+        return Scheduler(schedule_path).add(task, when)
+
+    @registry.tool("list_tasks", "List scheduled tasks (soonest first).")
+    def _list_tasks() -> str:
+        schedule_path = getattr(config, "schedule_path", None) if config else None
+        if schedule_path is None:
+            schedule_path = Path.home() / ".muse-top" / "schedule.json"
+        return Scheduler(schedule_path).render_list()
+
+    @registry.tool("cancel_task", "Cancel a scheduled task. Args: id.")
+    def _cancel_task(id: str) -> str:
+        schedule_path = getattr(config, "schedule_path", None) if config else None
+        if schedule_path is None:
+            schedule_path = Path.home() / ".muse-top" / "schedule.json"
+        return Scheduler(schedule_path).cancel(id)
 
     return registry
 

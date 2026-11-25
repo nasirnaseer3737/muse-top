@@ -14,6 +14,7 @@ from .config import Config
 from .history import History
 from .llm import GeminiClient
 from .memory import Memory
+from .schedule import Scheduler
 from .tools import ToolRegistry, build_default_registry, parse_tool_call
 
 SYSTEM_PROMPT = """You are Muse Top, a helpful personal assistant.
@@ -99,3 +100,24 @@ class Agent:
         self.history.append("User", message)
         self.history.append("Assistant", reply)
         return reply
+
+    def run_due_tasks(self, now=None) -> str:
+        """Run every scheduled task whose time has come.
+
+        Each due task is fed to the agent as a chat message; the task is
+        then marked done with the reply recorded, so it never runs twice.
+        Returns a short summary of what ran.
+        """
+        scheduler = Scheduler(self.config.schedule_path)
+        due = scheduler.due(now=now)
+        if not due:
+            return "No tasks due."
+        lines = [f"Running {len(due)} due task(s):"]
+        for task in due:
+            try:
+                reply = self.chat(task["task"])
+            except Exception as exc:  # noqa: BLE001 — a failed task must not block the rest
+                reply = f"Error running task: {exc}."
+            scheduler.mark_done(task["id"], reply, now=now)
+            lines.append(f"- {task['id']}: {task['task']} → {reply[:200]}")
+        return "\n".join(lines)
