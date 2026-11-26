@@ -16,6 +16,7 @@ from typing import Callable
 
 from .email_draft import create_draft, list_drafts
 from .files import read_file, write_file
+from .leads import score_leads_file
 from .schedule import Scheduler
 from .web import fetch_url
 
@@ -165,6 +166,20 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         if schedule_path is None:
             schedule_path = Path.home() / ".muse-top" / "schedule.json"
         return Scheduler(schedule_path).cancel(id)
+
+    @registry.tool(
+        "score_leads",
+        "Score a leads CSV in the workspace 0-100 (grades A-D, TCPA consent flag; no-consent leads are DO-NOT-CONTACT). Args: path (relative to the workspace), top (optional, default 5).",
+    )
+    def _score_leads(path: str, top: int = 5) -> str:
+        workspace = getattr(config, "workspace_dir", None) if config else None
+        if workspace is None:
+            workspace = Path.home() / ".muse-top" / "workspace"
+        max_bytes = getattr(config, "file_max_bytes", 64_000) if config else 64_000
+        max_rows = getattr(config, "lead_max_rows", 500) if config else 500
+        return score_leads_file(
+            workspace, path, top=top, max_bytes=max_bytes, max_rows=max_rows
+        )
 
     return registry
 

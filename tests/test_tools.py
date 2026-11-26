@@ -32,6 +32,7 @@ class TestToolRegistry(unittest.TestCase):
                 "recall_fact",
                 "remember_fact",
                 "schedule",
+                "score_leads",
                 "web_fetch",
                 "write_file",
             ],

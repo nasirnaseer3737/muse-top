@@ -31,6 +31,7 @@ class Config:
     schedule_path: Path = field(
         default_factory=lambda: Path.home() / ".muse-top" / "schedule.json"
     )
+    lead_max_rows: int = 500
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -60,6 +61,7 @@ class Config:
                 os.environ.get("MUSE_TOP_SCHEDULE_PATH")
                 or (data_dir / "schedule.json")
             ),
+            lead_max_rows=int(os.environ.get("MUSE_TOP_LEAD_MAX_ROWS", "500")),
         )
 
     @property

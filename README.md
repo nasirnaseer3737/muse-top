@@ -44,6 +44,16 @@ them in the chat. `python -m muse_top run --once` runs every task whose
 time has come, feeds each to the agent as a chat message, and marks it
 done so it never runs twice.
 
+Day 7 (2026-11-26): lead scoring — `score_leads` scores a leads CSV in
+the workspace 0–100 with grades A–D (email quality, phone, website,
+company size, industry fit, source, budget, TCPA consent), reusing the
+NZ AI Lead Scorer rule logic; leads without consent are scored but
+flagged DO-NOT-CONTACT and excluded from the ranked outreach list.
+Each top lead gets a one-line outreach angle, clearly labelled mock
+(not model output). At most 500 rows are scored per call (tune with
+`MUSE_TOP_LEAD_MAX_ROWS`); the CSV is read through the same workspace
+sandbox as `read_file`.
+
 ## Quick start
 
 ```bash
@@ -102,6 +112,14 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
   cancels one by id. `python -m muse_top run --once` executes every
   due task (each runs as a chat message) and marks it done so it never
   runs twice; a corrupt schedule file starts empty.
+- **Lead scoring** (`muse_top/leads.py`): `score_leads` scores a leads
+  CSV in the workspace 0–100 with grades A–D — email quality, phone,
+  website, company size, industry fit, source, budget, TCPA consent —
+  reusing the NZ AI Lead Scorer rule logic; leads without consent are
+  scored but flagged DO-NOT-CONTACT and excluded from the ranked list.
+  Each top lead gets a one-line outreach angle, clearly labelled mock.
+  At most 500 rows per call (tune with `MUSE_TOP_LEAD_MAX_ROWS`); the
+  CSV is read through the same workspace sandbox as `read_file`.
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 
