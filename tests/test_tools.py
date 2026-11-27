@@ -23,6 +23,7 @@ class TestToolRegistry(unittest.TestCase):
         self.assertEqual(
             self.registry.names(),
             [
+                "audit_seo",
                 "cancel_task",
                 "draft_email",
                 "get_current_time",

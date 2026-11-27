@@ -54,6 +54,16 @@ Each top lead gets a one-line outreach angle, clearly labelled mock
 `MUSE_TOP_LEAD_MAX_ROWS`); the CSV is read through the same workspace
 sandbox as `read_file`.
 
+Day 8 (2026-11-27): SEO audit — `audit_seo` fetches a URL and audits
+its on-page SEO (title, meta description, H1, heading order, image
+alt, canonical, Open Graph/Twitter tags, JSON-LD schema, content
+length, links, readability, target keyword), reusing the NZ AI SEO
+Auditor rule logic, into a 0–100 score with grade A–F plus short
+rule-based fixes (deterministic templates, not AI output). Fetches
+use the same http(s)-only, timeout + size-cap rules as `web_fetch`
+(tune with `MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`); live
+smoke test: example.com scores 42/100 (Grade D).
+
 ## Quick start
 
 ```bash
@@ -120,6 +130,14 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
   Each top lead gets a one-line outreach angle, clearly labelled mock.
   At most 500 rows per call (tune with `MUSE_TOP_LEAD_MAX_ROWS`); the
   CSV is read through the same workspace sandbox as `read_file`.
+- **SEO audit** (`muse_top/seo.py`): `audit_seo` fetches a URL and
+  audits its on-page SEO — title, meta description, H1, heading
+  order, image alt, canonical, Open Graph/Twitter tags, JSON-LD
+  schema, content length, links, readability, target keyword —
+  reusing the NZ AI SEO Auditor rule logic, into a 0–100 score with
+  grade A–F plus rule-based fixes (deterministic, not AI output).
+  Fetches use the same http(s)-only, timeout + size-cap rules as
+  `web_fetch` (`MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`).
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 

@@ -12,7 +12,7 @@ One item per day, in order. Small, focused, working. Mark each done with its dat
 - [x] 2026-11-26 — Day 7: lead tools — `score_leads` tool scores a leads CSV in the workspace 0-100 (grades A-D, TCPA consent flag; no-consent leads are DO-NOT-CONTACT and excluded from the ranked list), reusing the NZ AI Lead Scorer rule logic, with a labelled mock outreach angle per top lead.
 
 ## Milestone 2 — Real assistant jobs
-- [ ] SEO tools: audit a URL's on-page SEO (reuse the NZ AI SEO Auditor logic).
+- [x] 2026-11-27 — Day 8: SEO tools — `audit_seo` tool audits a URL's on-page SEO (title, meta, H1, headings, alt, canonical, OG/Twitter, JSON-LD, content, links, readability, keyword) into a 0-100 score + grade A-F with rule-based fixes, reusing the NZ AI SEO Auditor logic.
 - [ ] Outreach tools: draft a personalised outreach email from a prospect row.
 - [ ] Social tools: draft a LinkedIn/X/Facebook post from a topic.
 - [ ] Daily briefing: one command that summarises memory + due tasks + today's schedule.

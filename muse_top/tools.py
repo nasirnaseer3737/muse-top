@@ -18,6 +18,7 @@ from .email_draft import create_draft, list_drafts
 from .files import read_file, write_file
 from .leads import score_leads_file
 from .schedule import Scheduler
+from .seo import audit_seo_url
 from .web import fetch_url
 
 
@@ -180,6 +181,16 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         return score_leads_file(
             workspace, path, top=top, max_bytes=max_bytes, max_rows=max_rows
         )
+
+    @registry.tool(
+        "audit_seo",
+        "Audit a URL's on-page SEO (title, meta description, H1, headings, image alt, canonical, social tags, schema, content, links, readability, keyword) and return a 0-100 score with grade A-F plus rule-based fixes. Args: url, keyword (optional).",
+    )
+    def _audit_seo(url: str, keyword: str = "") -> str:
+        timeout = getattr(config, "web_timeout_seconds", 15) if config else 15
+        max_bytes = getattr(config, "web_max_bytes", 512_000) if config else 512_000
+        return audit_seo_url(url, keyword=keyword, timeout_seconds=timeout,
+                             max_bytes=max_bytes)
 
     return registry
 
