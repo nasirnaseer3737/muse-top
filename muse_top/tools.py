@@ -17,6 +17,7 @@ from typing import Callable
 from .email_draft import create_draft, list_drafts
 from .files import read_file, write_file
 from .leads import score_leads_file
+from .outreach import draft_outreach_file
 from .schedule import Scheduler
 from .seo import audit_seo_url
 from .web import fetch_url
@@ -191,6 +192,33 @@ def build_default_registry(memory, config=None) -> ToolRegistry:
         max_bytes = getattr(config, "web_max_bytes", 512_000) if config else 512_000
         return audit_seo_url(url, keyword=keyword, timeout_seconds=timeout,
                              max_bytes=max_bytes)
+
+    @registry.tool(
+        "draft_outreach",
+        "Draft a personalised outreach email for one prospect in a leads CSV and save it as a draft — never sends. No-consent prospects are DO-NOT-CONTACT (no draft). Args: path (relative to the workspace), row (optional 1-based row number) or email (optional) to pick the prospect.",
+    )
+    def _draft_outreach(path: str, row=None, email: str | None = None) -> str:
+        workspace = getattr(config, "workspace_dir", None) if config else None
+        if workspace is None:
+            workspace = Path.home() / ".muse-top" / "workspace"
+        drafts_dir = getattr(config, "drafts_dir", None) if config else None
+        if drafts_dir is None:
+            drafts_dir = Path.home() / ".muse-top" / "drafts"
+        max_bytes = getattr(config, "file_max_bytes", 64_000) if config else 64_000
+        max_rows = getattr(config, "lead_max_rows", 500) if config else 500
+        sender_name = getattr(config, "sender_name", "Nasir Naseer") if config else "Nasir Naseer"
+        whatsapp = getattr(config, "sender_whatsapp", "923339845505") if config else "923339845505"
+        row_int = None
+        if row is not None:
+            try:
+                row_int = int(row)
+            except (TypeError, ValueError):
+                return f"Error: row must be a number, got '{row}'."
+        return draft_outreach_file(
+            workspace, path, drafts_dir, row=row_int, email=email,
+            sender_name=sender_name, whatsapp=whatsapp,
+            max_bytes=max_bytes, max_rows=max_rows,
+        )
 
     return registry
 

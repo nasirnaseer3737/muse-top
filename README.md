@@ -64,6 +64,23 @@ use the same http(s)-only, timeout + size-cap rules as `web_fetch`
 (tune with `MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`); live
 smoke test: example.com scores 42/100 (Grade D).
 
+Day 9 (2026-11-28): outreach drafting — `draft_outreach` drafts a
+personalised outreach email for one prospect in a leads CSV (picked
+by 1-based row number or email) and saves it as a draft via
+`draft_email` — never sends. The mail is built from deterministic
+templates personalised with the prospect's own fields (name, company,
+industry, website, lead score) and follows the standing outreach
+rules: no call CTA (reply to the email or WhatsApp
+`wa.me/923339845505`), the experience line (15+ years, 50+ websites,
+30 built/launched in the last 12 months), the prospect's problem and
+how web + local SEO + AI automation solve it, no prices. Three
+subject-line options are offered; the first is used for the draft.
+TCPA consent gate: a no-consent prospect is DO-NOT-CONTACT and no
+draft is built. Sender name / WhatsApp are configurable
+(`MUSE_TOP_SENDER_NAME` / `MUSE_TOP_WHATSAPP`); live smoke test:
+Acme Dental 100/100 (A) and Joe Plumbing 60/100 (B) drafted, the
+no-consent row refused.
+
 ## Quick start
 
 ```bash
@@ -138,6 +155,18 @@ you ──▶ CLI (muse_top/cli.py) ──▶ Agent (muse_top/agent.py)
   grade A–F plus rule-based fixes (deterministic, not AI output).
   Fetches use the same http(s)-only, timeout + size-cap rules as
   `web_fetch` (`MUSE_TOP_WEB_TIMEOUT` / `MUSE_TOP_WEB_MAX_BYTES`).
+- **Outreach drafting** (`muse_top/outreach.py`): `draft_outreach`
+  drafts a personalised outreach email for one prospect in a leads
+  CSV (by 1-based row number or email) and saves it as a draft —
+  never sends. Built from deterministic templates personalised with
+  the prospect's own fields, following the standing outreach rules:
+  no call CTA (reply or WhatsApp), the experience line (15+ years,
+  50+ websites, 30 built/launched in 12 months), the prospect's
+  problem and how web + local SEO + AI automation solve it, no
+  prices; three subject options, first one used. TCPA consent gate:
+  no-consent prospects are DO-NOT-CONTACT — no draft is built.
+  Sender name / WhatsApp via `MUSE_TOP_SENDER_NAME` /
+  `MUSE_TOP_WHATSAPP`.
 - **Config** (`muse_top/config.py`): everything from environment variables.
   Never put an API key in code.
 

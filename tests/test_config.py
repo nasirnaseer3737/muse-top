@@ -50,6 +50,19 @@ class TestConfigFromEnv(unittest.TestCase):
         self.assertEqual(config.data_dir, home / ".muse-top")
         self.assertEqual(config.drafts_dir, home / ".muse-top" / "drafts")
 
+    def test_sender_defaults(self):
+        with mock.patch.dict(os.environ, {}, clear=True):
+            config = Config.from_env()
+        self.assertEqual(config.sender_name, "Nasir Naseer")
+        self.assertEqual(config.sender_whatsapp, "923339845505")
+
+    def test_sender_env_overrides(self):
+        env = {"MUSE_TOP_SENDER_NAME": "Test Sender", "MUSE_TOP_WHATSAPP": "12345"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            config = Config.from_env()
+        self.assertEqual(config.sender_name, "Test Sender")
+        self.assertEqual(config.sender_whatsapp, "12345")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -26,6 +26,7 @@ class TestToolRegistry(unittest.TestCase):
                 "audit_seo",
                 "cancel_task",
                 "draft_email",
+                "draft_outreach",
                 "get_current_time",
                 "list_drafts",
                 "list_tasks",

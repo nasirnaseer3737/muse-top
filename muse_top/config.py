@@ -32,6 +32,8 @@ class Config:
         default_factory=lambda: Path.home() / ".muse-top" / "schedule.json"
     )
     lead_max_rows: int = 500
+    sender_name: str = "Nasir Naseer"
+    sender_whatsapp: str = "923339845505"
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -62,6 +64,10 @@ class Config:
                 or (data_dir / "schedule.json")
             ),
             lead_max_rows=int(os.environ.get("MUSE_TOP_LEAD_MAX_ROWS", "500")),
+            sender_name=os.environ.get("MUSE_TOP_SENDER_NAME", "Nasir Naseer").strip()
+            or "Nasir Naseer",
+            sender_whatsapp=os.environ.get("MUSE_TOP_WHATSAPP", "923339845505").strip()
+            or "923339845505",
         )
 
     @property

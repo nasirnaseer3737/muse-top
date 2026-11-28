@@ -13,7 +13,7 @@ One item per day, in order. Small, focused, working. Mark each done with its dat
 
 ## Milestone 2 — Real assistant jobs
 - [x] 2026-11-27 — Day 8: SEO tools — `audit_seo` tool audits a URL's on-page SEO (title, meta, H1, headings, alt, canonical, OG/Twitter, JSON-LD, content, links, readability, keyword) into a 0-100 score + grade A-F with rule-based fixes, reusing the NZ AI SEO Auditor logic.
-- [ ] Outreach tools: draft a personalised outreach email from a prospect row.
+- [x] 2026-11-28 — Day 9: Outreach tools — `draft_outreach` tool drafts a personalised outreach email from a prospect row in a leads CSV (by row number or email), 3 subject options, saved as a draft via `draft_email` — never sends. Follows the standing outreach rules (no call CTA — reply or WhatsApp wa.me/923339845505; experience line 15+ yrs / 50+ sites / 30 in last 12 months; problem + web/local SEO/AI solution; no prices) and the TCPA consent gate (no-consent = DO-NOT-CONTACT, no draft).
 - [ ] Social tools: draft a LinkedIn/X/Facebook post from a topic.
 - [ ] Daily briefing: one command that summarises memory + due tasks + today's schedule.
 
